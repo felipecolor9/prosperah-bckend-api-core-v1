@@ -7,12 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-//Editar
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "${spring.datasource.schema-name.table-cadastral-user.name}")
-public class CadastralUserPersistData {
+@Table(name = "${spring.datasource.schema-name.table-user.name}")
+public class UserPersistData {
 
     @Id
     private Long id;

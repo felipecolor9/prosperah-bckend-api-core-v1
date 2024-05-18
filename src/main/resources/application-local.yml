@@ -2,11 +2,12 @@ spring:
 
   # Database #
   datasource:
-    url: //localhost:3306/test
+    url: jdbc:mysql://127.0.0.1:3307/prosperah_db_rel_corev1
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
     database:
-      name: test
+      name: prosperah_db_rel_corev1
       schemas:
         table-cadastral-user:
           name: tb001_usuario_cadastral
