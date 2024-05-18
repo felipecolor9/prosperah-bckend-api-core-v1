@@ -1,0 +1,6 @@
+# Application #
+application:
+  name: bkend-api-core-v1
+server:
+  port: 8080
+
