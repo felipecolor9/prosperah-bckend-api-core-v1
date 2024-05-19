@@ -22,26 +22,32 @@ import static br.com.prosperah.api.appcore.utils.ConvertUtils.convertUUIDToBytes
 public class CadastralUserPersistData {
 
     @Id
-    private byte[] codUsr;
+    @Column(name = "cod_usr")
+    private byte[] id;
 
-    private String usrNameLogin;
+    @Column(name = "usr_nome_login")
+    private String username;
 
-    private String usrSenha;
+    @Column(name = "usr_senha")
+    private String password;
 
-    private String usrNomeCompleto;
+    @Column(name = "usr_nome_completo")
+    private String fullName;
 
-    private String usrEmail;
+    @Column(name = "usr_email")
+    private String email;
 
-    private Timestamp usrDataCriacao;
+    @Column(name = "usr_data_criacao")
+    private Timestamp creationDate;
 
-    public CadastralUserPersistData toPersistData(CadastralUser cadastralUser) {
+    public CadastralUserPersistData toPersistData(CadastralUser user) {
         return CadastralUserPersistData.builder()
-                .codUsr(convertUUIDToBytes(cadastralUser.getId()))
-                .usrNameLogin(cadastralUser.getUsername())
-                .usrSenha(cadastralUser.getPassword())
-                .usrNomeCompleto(cadastralUser.getFullName())
-                .usrEmail(cadastralUser.getEmail())
-                .usrDataCriacao(Timestamp.valueOf(cadastralUser.getCreationDate()))
+                .id(convertUUIDToBytes(user.getId()))
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .fullName(user.getFullName())
+                .email(user.getEmail())
+                .creationDate(Timestamp.valueOf(user.getCreationDate()))
                 .build();
     }
 }

@@ -17,37 +17,44 @@ import static br.com.prosperah.api.appcore.utils.ConvertUtils.convertUUIDToBytes
 public class UserPersistData {
 
     @Id
-    private byte[] codUsr;
+    @Column(name = "cod_usr")
+    private byte[] id;
 
-    private byte[] codUsrCadFk;
+    @OneToOne
+    @JoinColumn(name = "cod_usr_cad_fk")
+    private CadastralUserPersistData codUsrCadFk;
 
-    private String usrNomeLogin;
+    @Column(name = "usr_nome_login")
+    private String username;
 
-    private String usrSenha;
+    @Column(name = "usr_senha")
+    private String password;
 
-    private String usrNomeCompleto;
+    @Column(name = "usr_nome_completo")
+    private String fullName;
 
-    private String usrEmail;
+    @Column(name = "usr_email")
+    private String email;
 
-    private Timestamp usrDataNasc;
+    @Column(name = "usr_data_nasc")
+    private Timestamp birthDate;
 
-    private Timestamp usrDataCriacao;
+    @Column(name = "usr_data_criacao")
+    private Timestamp creationDate;
 
-    private Timestamp usrDataValidacao;
-
-
+    @Column(name = "usr_data_validacao")
+    private Timestamp validationDate;
 
     public UserPersistData toPersistData(User user) {
         return UserPersistData.builder()
-                .codUsr(convertUUIDToBytes(user.getId()))
-                .codUsrCadFk(convertUUIDToBytes(user.getUser().getId()))
-                .usrNomeLogin(user.getUsername())
-                .usrSenha(user.getPassword())
-                .usrNomeCompleto(user.getFullName())
-                .usrEmail(user.getEmail())
-                .usrDataNasc(Timestamp.valueOf(user.getBirthDate()))
-                .usrDataCriacao(Timestamp.valueOf(user.getCreationDate()))
-                .usrDataValidacao(Timestamp.valueOf(user.getValidationDate()))
+                .id(convertUUIDToBytes(user.getId()))
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .fullName(user.getFullName())
+                .email(user.getEmail())
+                .birthDate(Timestamp.valueOf(user.getBirthDate()))
+                .creationDate(Timestamp.valueOf(user.getCreationDate()))
+                .validationDate(Timestamp.valueOf(user.getValidationDate()))
                 .build();
     }
 }
