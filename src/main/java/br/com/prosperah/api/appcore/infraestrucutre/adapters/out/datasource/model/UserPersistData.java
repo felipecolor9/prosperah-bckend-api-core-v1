@@ -13,7 +13,7 @@ import static br.com.prosperah.api.appcore.utils.ConvertUtils.convertUUIDToBytes
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tb001_usuario_cadastral")
+@Table(name = "${spring.datasource.database.schemas.table-consolidated-users}")
 public class UserPersistData {
 
     @Id
@@ -22,7 +22,7 @@ public class UserPersistData {
 
     @OneToOne
     @JoinColumn(name = "cod_usr_cad_fk")
-    private CadastralUserPersistData codUsrCadFk;
+    private CadastralUserPersistData cadastralUser;
 
     @Column(name = "usr_nome_login")
     private String username;

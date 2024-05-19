@@ -9,10 +9,8 @@ spring:
     database:
       name: prosperah_db_rel_corev1
       schemas:
-        table-cadastral-user:
-          name: tb001_usuario_cadastral
-        table-consolidated-user:
-          name: tb002_usuario_consolidado
+        table-cadastral-user: tb001_usuario_cadastral
+        table-consolidated-user: tb002_usuario_consolidado
 
   jpa:
     hibernate:

@@ -18,7 +18,7 @@ import static br.com.prosperah.api.appcore.utils.ConvertUtils.convertUUIDToBytes
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tb002_usuario_consolidado")
+@Table(name = "${spring.datasource.database.schemas.table-cadastral-user}")
 public class CadastralUserPersistData {
 
     @Id
