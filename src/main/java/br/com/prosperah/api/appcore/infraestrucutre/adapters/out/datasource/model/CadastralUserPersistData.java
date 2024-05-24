@@ -4,6 +4,7 @@ import br.com.prosperah.api.appcore.domain.CadastralUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +16,7 @@ import java.sql.Timestamp;
 import static br.com.prosperah.api.appcore.utils.ConvertUtils.convertUUIDToBytes;
 
 @Data
-@AllArgsConstructor
+@AllArgsConstructor @NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "${spring.datasource.database.schemas.table-cadastral-user}")
@@ -40,7 +41,7 @@ public class CadastralUserPersistData {
     @Column(name = "usr_data_criacao")
     private Timestamp creationDate;
 
-    public CadastralUserPersistData toPersistData(CadastralUser user) {
+    public static CadastralUserPersistData toPersistData(CadastralUser user) {
         return CadastralUserPersistData.builder()
                 .id(convertUUIDToBytes(user.getId()))
                 .username(user.getUsername())
