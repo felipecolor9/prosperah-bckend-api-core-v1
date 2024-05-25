@@ -21,3 +21,18 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
         format_sql: true
 
+  # Email #
+mail:
+  protocol:
+    transport-strategy: SMTP_TLS
+  smtp:
+    host: smtp.default.com
+    port: 25
+    username: username
+    password: password
+  defaults:
+    content:
+      transfer:
+        encoding: BINARY
+  subject: Titulo de teste para envio de email
+

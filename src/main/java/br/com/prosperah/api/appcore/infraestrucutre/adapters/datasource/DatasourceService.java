@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static br.com.prosperah.api.appcore.constants.Constants.*;
 import static br.com.prosperah.api.appcore.utils.GeneralUtils.generateRandomSixDigitNumber;
 import static br.com.prosperah.api.appcore.utils.ValidationUtils.isValidEmail;
@@ -26,7 +28,7 @@ public class DatasourceService implements DatasourcePort {
     @Autowired
     UserRepository userRepository;
 
-    public boolean saveCadastralUser(CadastralUserPersistData cadUser) throws BadRequestException {
+    public Optional<CadastralUserPersistData> saveCadastralUser(CadastralUserPersistData cadUser) throws BadRequestException {
         var email = cadUser.getEmail();
         var username = cadUser.getUsername();
         if (isValidEmail(email) && isUserAvailable(username, email)) {
@@ -36,9 +38,8 @@ public class DatasourceService implements DatasourcePort {
             cadUser.setCodAuth(generateRandomSixDigitNumber());
             cadastralRepository.save(cadUser);
             log.info(String.format(USUARIO_CRIADO, username));
-            return true;
         }
-        return false;
+        return Optional.empty();
     }
 
     private boolean isUserAvailable(String username, String email) throws BadRequestException {

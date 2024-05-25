@@ -12,9 +12,7 @@ public class ValidationUtils {
      * @param  email  the email to be validated
      * @return        true if the email is valid, false otherwise
      */public static boolean isValidEmail(String email) throws BadRequestException {
-        if (!EmailValidator.getInstance().isValid(email)) {
-            throw new InvalidEmailException();
-        }
+        if (!EmailValidator.getInstance().isValid(email)) throw new InvalidEmailException();
         return true;
     }
 }
