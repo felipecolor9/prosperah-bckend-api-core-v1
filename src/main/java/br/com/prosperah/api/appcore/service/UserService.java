@@ -19,19 +19,17 @@ public class UserService {
 
     @Autowired
     private DatasourcePort datasource;
+
     @Transactional
     public ResponseEntity<CadastralUser> createCadastralUser(CadastralUser user) throws BadRequestException {
-
-//        return new ResponseEntity<>(empty(), "Usuário já existe", 400);
-//        return new ResponseEntity<>(empty(), "Email inválido ou ja existente", 400);
-//        TODO throw bad request e exception handlers
         if (datasource.saveCadastralUser(toPersistData(user))) {
-
+            sendAuthenticationEmail(user.getEmail());
         }
         return new ResponseEntity<>(user, "Usuário criado com sucesso", 201);
     }
 
-    private boolean isUsernameAvailable(String username) {
-        return true;
+    private void sendAuthenticationEmail(String emailAddress) {
+
+
     }
 }

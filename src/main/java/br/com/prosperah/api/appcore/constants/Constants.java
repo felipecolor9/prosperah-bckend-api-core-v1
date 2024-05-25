@@ -1,4 +1,4 @@
-package br.com.prosperah.api.appcore;
+package br.com.prosperah.api.appcore.constants;
 
 public class Constants {
 

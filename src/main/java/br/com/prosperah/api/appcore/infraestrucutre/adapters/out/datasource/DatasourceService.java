@@ -11,7 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static br.com.prosperah.api.appcore.Constants.*;
+import static br.com.prosperah.api.appcore.constants.Constants.*;
+import static br.com.prosperah.api.appcore.utils.GeneralUtils.generateRandomSixDigitNumber;
 import static br.com.prosperah.api.appcore.utils.ValidationUtils.isValidEmail;
 
 @Service
@@ -30,6 +31,7 @@ public class DatasourceService implements DatasourcePort {
         var username = cadUser.getUsername();
 
         if (isValidEmail(email) && isUserAvailable(username, email)) {
+            cadUser.setCodAuth(generateRandomSixDigitNumber());
             cadastralRepository.save(cadUser);
             log.info(String.format(USUARIO_CRIADO, username));
             return true;

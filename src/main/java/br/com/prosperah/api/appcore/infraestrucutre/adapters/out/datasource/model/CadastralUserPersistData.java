@@ -1,10 +1,7 @@
 package br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.model;
 
 import br.com.prosperah.api.appcore.domain.CadastralUser;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,6 +36,9 @@ public class CadastralUserPersistData {
 
     @Column(name = "usr_data_criacao")
     private Timestamp creationDate;
+
+    @Column(name = "cod_auth_email")
+    private int codAuth;
 
     public static CadastralUserPersistData toPersistData(CadastralUser user) {
         return CadastralUserPersistData.builder()

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import static br.com.prosperah.api.appcore.Constants.*;
+import static br.com.prosperah.api.appcore.constants.Constants.*;
 
 @ControllerAdvice
 @RestControllerAdvice

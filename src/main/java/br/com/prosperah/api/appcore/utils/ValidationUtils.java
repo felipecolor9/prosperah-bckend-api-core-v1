@@ -6,7 +6,12 @@ import org.apache.coyote.BadRequestException;
 
 public class ValidationUtils {
 
-    public static boolean isValidEmail(String email) throws BadRequestException {
+    /**
+     * Checks if the given email is valid.
+     *
+     * @param  email  the email to be validated
+     * @return        true if the email is valid, false otherwise
+     */public static boolean isValidEmail(String email) throws BadRequestException {
         if (!EmailValidator.getInstance().isValid(email)) {
             throw new InvalidEmailException();
         }
