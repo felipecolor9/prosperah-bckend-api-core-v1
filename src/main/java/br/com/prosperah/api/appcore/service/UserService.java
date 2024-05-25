@@ -5,6 +5,7 @@ import br.com.prosperah.api.appcore.domain.User;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.DatasourcePort;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.model.CadastralUserPersistData;
 import br.com.prosperah.api.appcore.response.ResponseEntity;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +20,14 @@ public class UserService {
     @Autowired
     private DatasourcePort datasource;
     @Transactional
-    public ResponseEntity<CadastralUser> createCadastralUser(CadastralUser user) {
+    public ResponseEntity<CadastralUser> createCadastralUser(CadastralUser user) throws BadRequestException {
 
 //        return new ResponseEntity<>(empty(), "Usuário já existe", 400);
 //        return new ResponseEntity<>(empty(), "Email inválido ou ja existente", 400);
 //        TODO throw bad request e exception handlers
-        datasource.saveCadastralUser(toPersistData(user));
+        if (datasource.saveCadastralUser(toPersistData(user))) {
+
+        }
         return new ResponseEntity<>(user, "Usuário criado com sucesso", 201);
     }
 
