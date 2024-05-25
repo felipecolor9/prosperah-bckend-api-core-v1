@@ -38,6 +38,7 @@ public class DatasourceService implements DatasourcePort {
             cadUser.setCodAuth(generateRandomSixDigitNumber());
             cadastralRepository.save(cadUser);
             log.info(String.format(USUARIO_CRIADO, username));
+            return Optional.of(cadUser);
         }
         return Optional.empty();
     }
