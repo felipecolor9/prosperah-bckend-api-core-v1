@@ -28,6 +28,7 @@ mail:
   smtp:
     host: smtp.default.com
     port: 25
+    # TODO Achar forma de passar usuario e senha do email de forma criptografada
     username: username
     password: password
   defaults:

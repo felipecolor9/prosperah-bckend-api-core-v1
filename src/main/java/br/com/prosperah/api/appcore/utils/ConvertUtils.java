@@ -31,6 +31,16 @@ public class ConvertUtils {
         return new UUID(high, low);
     }
 
+    /**
+     * Converts the given string to a byte array.
+     *
+     * @param  string   the string to be converted to bytes
+     * @return          the byte array representing the string
+     */
+    public static char[] convertStringToChars(String string) {
+        return string.toCharArray();
+    }
+
 
 }
 
