@@ -5,15 +5,21 @@ import br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.mode
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.model.UserPersistData;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.repository.CadastralRepository;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.repository.UserRepository;
+import br.com.prosperah.api.appcore.utils.ValidationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import java.util.Optional;
+
 import static br.com.prosperah.api.appcore.Constants.*;
 import static br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.model.CadastralUserPersistData.toPersistData;
+import static br.com.prosperah.api.appcore.utils.ValidationUtils.isEmailValid;
+import static java.util.Optional.empty;
 
 @Service
 public class DatasourceService implements DatasourcePort {
@@ -26,13 +32,16 @@ public class DatasourceService implements DatasourcePort {
     @Autowired
     UserRepository userRepository;
 
+    public boolean saveCadastralUser(CadastralUserPersistData cadUser) {
+        var email = cadUser.getEmail();
+        var username = cadUser.getUsername();
 
-    @Transactional
-    public void createUser(CadastralUser cadUser) {
-        if (isUserAvailable(cadUser.getUsername(), cadUser.getEmail())) {
-            generateValidationEmail(cadUser.getEmail());
-            cadastralRepository.save(toPersistData(cadUser));
+        if (isUserAvailable(username, email) && isEmailValid(email) ) {
+            cadastralRepository.save(cadUser);
+            log.info(String.format(USUARIO_CRIADO, username));
+            return true;
         }
+        return false;
     }
     private boolean isUserAvailable(String username, String email) {
         if (cadastralRepository.existsByEmail(email) || cadastralRepository.existsByUsername(username)) {
@@ -44,10 +53,5 @@ public class DatasourceService implements DatasourcePort {
             return false;
         }
         return true;
-    }
-
-    private void generateValidationEmail(String email) {
-        log.info(String.format(REGISTRANDO_USUARIO_EMAIL_VERIFICACAO, email));
-
     }
 }

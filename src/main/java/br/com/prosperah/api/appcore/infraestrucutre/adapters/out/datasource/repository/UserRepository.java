@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface UserRepository extends JpaRepository<UserPersistData, Long> {
 
-    @Query("SELECT COUNT(u) > 0 FROM UserPersistData u WHERE u.username = :username")
+    @org.springframework.data.jdbc.repository.query.Query("SELECT COUNT(u) FROM UserPersistData u WHERE u.username = :username")
     boolean existsByUsername(String username);
 
-    @Query("SELECT COUNT(u) > 0 FROM UserPersistData u WHERE u.email = :email")
+    @org.springframework.data.jdbc.repository.query.Query("SELECT COUNT(u) FROM UserPersistData u WHERE u.email = :email")
     boolean existsByEmail(String email);
 
 }

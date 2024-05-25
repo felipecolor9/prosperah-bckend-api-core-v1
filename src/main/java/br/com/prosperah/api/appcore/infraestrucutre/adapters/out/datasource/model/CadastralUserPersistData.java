@@ -19,9 +19,8 @@ import static br.com.prosperah.api.appcore.utils.ConvertUtils.convertUUIDToBytes
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "${spring.datasource.database.schemas.table-cadastral-user}")
+@Table(name = "tb001_usuario_cadastral")
 public class CadastralUserPersistData {
-
     @Id
     @Column(name = "cod_usr")
     private byte[] id;

@@ -1,8 +1,6 @@
 package br.com.prosperah.api.appcore.utils;
 
 import java.nio.ByteBuffer;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.UUID;
 
 public class ConvertUtils {

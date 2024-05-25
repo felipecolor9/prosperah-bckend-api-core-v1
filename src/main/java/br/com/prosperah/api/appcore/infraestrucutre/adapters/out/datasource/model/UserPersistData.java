@@ -15,7 +15,7 @@ import static br.com.prosperah.api.appcore.utils.ConvertUtils.convertUUIDToBytes
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "${spring.datasource.database.schemas.table-consolidated-users}")
+@Table(name = "tb002_usuario_consolidado")
 public class UserPersistData {
 
     @Id
