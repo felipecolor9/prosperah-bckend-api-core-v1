@@ -18,6 +18,10 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
+
+		<!-- TODO organizar versões das dependencias -->
+		<!-- comentar indicando o nome das dependencias é uma boa pratica -->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
@@ -47,6 +51,12 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.28</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.simplejavamail/simple-java-mail -->
+		<dependency>
+			<groupId>org.simplejavamail</groupId>
+			<artifactId>simple-java-mail</artifactId>
+			<version>8.10.1</version>
 		</dependency>
 
 		<dependency>

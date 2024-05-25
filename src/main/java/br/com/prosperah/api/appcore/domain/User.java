@@ -1,7 +1,6 @@
 package br.com.prosperah.api.appcore.domain;
 
-import br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.model.CadastralUserPersistData;
-import br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.model.UserPersistData;
+import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model.UserPersistData;
 import br.com.prosperah.api.appcore.utils.ConvertUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,10 +1,10 @@
-package br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource;
+package br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource;
 
 import br.com.prosperah.api.appcore.exceptions.EmailAlreadyExistsException;
 import br.com.prosperah.api.appcore.exceptions.UsernameAlreadyExistsException;
-import br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.model.CadastralUserPersistData;
-import br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.repository.CadastralRepository;
-import br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.repository.UserRepository;
+import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model.CadastralUserPersistData;
+import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.repository.CadastralRepository;
+import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.repository.UserRepository;
 import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +29,10 @@ public class DatasourceService implements DatasourcePort {
     public boolean saveCadastralUser(CadastralUserPersistData cadUser) throws BadRequestException {
         var email = cadUser.getEmail();
         var username = cadUser.getUsername();
-
         if (isValidEmail(email) && isUserAvailable(username, email)) {
+            //TODO - impedir que seja criado um novo cadastro com o mesmo uuid (atualmente salva e
+            // sobreescreve o usuario anterior mesmo que passe por todas as validacoes)
+            // obs: gerar uuid nao é responsabilidade do usuário
             cadUser.setCodAuth(generateRandomSixDigitNumber());
             cadastralRepository.save(cadUser);
             log.info(String.format(USUARIO_CRIADO, username));

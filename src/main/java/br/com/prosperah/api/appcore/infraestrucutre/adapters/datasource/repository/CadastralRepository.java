@@ -1,8 +1,7 @@
-package br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.repository;
+package br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.repository;
 
-import br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.model.CadastralUserPersistData;
+import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model.CadastralUserPersistData;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 public interface CadastralRepository extends JpaRepository<CadastralUserPersistData, Long> {
 

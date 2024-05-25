@@ -1,4 +1,4 @@
-package br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.model;
+package br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model;
 
 import br.com.prosperah.api.appcore.domain.User;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.UUID;
 
 import static br.com.prosperah.api.appcore.utils.ConvertUtils.convertUUIDToBytes;
 

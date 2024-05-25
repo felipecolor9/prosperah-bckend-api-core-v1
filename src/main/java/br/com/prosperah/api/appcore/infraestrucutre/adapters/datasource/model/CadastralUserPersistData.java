@@ -1,4 +1,4 @@
-package br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.model;
+package br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model;
 
 import br.com.prosperah.api.appcore.domain.CadastralUser;
 import lombok.*;

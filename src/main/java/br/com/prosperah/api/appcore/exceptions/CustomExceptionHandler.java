@@ -1,7 +1,7 @@
 package br.com.prosperah.api.appcore.exceptions;
 
-import br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.DatasourceService;
-import br.com.prosperah.api.appcore.response.ResponseEntity;
+import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.DatasourceService;
+import br.com.prosperah.api.appcore.domain.response.ResponseEntity;
 import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

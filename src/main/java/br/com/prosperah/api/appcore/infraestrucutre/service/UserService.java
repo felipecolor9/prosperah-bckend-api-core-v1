@@ -1,18 +1,15 @@
-package br.com.prosperah.api.appcore.service;
+package br.com.prosperah.api.appcore.infraestrucutre.service;
 
 import br.com.prosperah.api.appcore.domain.CadastralUser;
-import br.com.prosperah.api.appcore.domain.User;
-import br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.DatasourcePort;
-import br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.model.CadastralUserPersistData;
-import br.com.prosperah.api.appcore.response.ResponseEntity;
+import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.DatasourcePort;
+import br.com.prosperah.api.appcore.domain.response.ResponseEntity;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
-import static br.com.prosperah.api.appcore.infraestrucutre.adapters.out.datasource.model.CadastralUserPersistData.toPersistData;
-import static java.util.Optional.empty;
+import static br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model.CadastralUserPersistData.toPersistData;
 
 @Service
 public class UserService {

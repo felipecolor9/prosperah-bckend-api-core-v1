@@ -1,6 +1,5 @@
-package br.com.prosperah.api.appcore.response;
+package br.com.prosperah.api.appcore.domain.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
