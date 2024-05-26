@@ -1,6 +1,7 @@
 package br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource;
 
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model.CadastralUserPersistData;
+import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model.UserPersistData;
 import org.apache.coyote.BadRequestException;
 
 import java.util.Optional;
@@ -8,4 +9,5 @@ import java.util.Optional;
 public interface DatasourcePort {
 
     Optional<CadastralUserPersistData> saveCadastralUser(CadastralUserPersistData cadUser) throws BadRequestException;
+    Optional<UserPersistData> saveUser(String clientId, String authCode,String sessionId, String userEmail) throws BadRequestException;
 }

@@ -1,0 +1,22 @@
+name: Cria PR para develop
+
+on:
+  push:
+    branches:
+      - 'feature/*'
+
+jobs:
+  create_pr:
+    if: startsWith(github.head_ref, 'feature/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Merge to develop"
+          body: "This PR merges changes from local feature branch to develop"
+          base: develop

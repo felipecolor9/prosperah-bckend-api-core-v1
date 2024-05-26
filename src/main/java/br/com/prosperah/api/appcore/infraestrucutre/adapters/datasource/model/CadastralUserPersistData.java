@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 import java.sql.Timestamp;
 
-import static br.com.prosperah.api.appcore.utils.ConvertUtils.convertUUIDToBytes;
+import static br.com.prosperah.api.appcore.utils.ConvertUtils.ToBytes;
 
 @Data
 @AllArgsConstructor @NoArgsConstructor
@@ -40,9 +40,10 @@ public class CadastralUserPersistData {
     @Column(name = "cod_auth_email")
     private int codAuth;
 
+    //TODO BirthDate
+
     public static CadastralUserPersistData toPersistData(CadastralUser user) {
         return CadastralUserPersistData.builder()
-                .id(convertUUIDToBytes(user.getId()))
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .fullName(user.getFullName())
