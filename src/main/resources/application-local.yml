@@ -1,4 +1,8 @@
 spring:
+  #Use this to befriend spring-boot-starter-actuator & springfox-boot-starter
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
 
   # Database #
   datasource:
@@ -23,6 +27,7 @@ spring:
 
   # Email #
 mail:
+  debug: true
   protocol:
     transport-strategy: SMTP_TLS
   smtp:
@@ -35,5 +40,4 @@ mail:
     content:
       transfer:
         encoding: BINARY
-  subject: Titulo de teste para envio de email
 
