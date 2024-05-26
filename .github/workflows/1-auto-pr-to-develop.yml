@@ -1,4 +1,4 @@
-name: [ LOCAL ] Cria PR para develop
+name: Cria PR para develop
 
 on:
   push:
@@ -17,7 +17,6 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
           title: "Merge to develop"
           body: "This PR merges changes from local feature branch to develop"
           base: develop
