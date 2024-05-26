@@ -37,7 +37,7 @@ public class DatasourceService implements DatasourcePort {
             // obs: gerar uuid nao é responsabilidade do usuário
             cadUser.setCodAuth(generateRandomSixDigitNumber());
             cadastralRepository.save(cadUser);
-            log.info(String.format(USUARIO_CRIADO, username));
+            log.info(USUARIO_CRIADO, username);
             return Optional.of(cadUser);
         }
         return Optional.empty();

@@ -23,17 +23,17 @@ public class CustomExceptionHandler {
     public ResponseEntity<Object> handleBadRequest(BadRequestException ex) {
 
         if (ex instanceof InvalidEmailException) {
-            log.info("[STATUS 400] - BAD REQUEST: EMAIL INVALIDADO DURANTE O CADASTRO: {}", ex.getLocalizedMessage());
+            log.info("[STATUS 400] - BAD REQUEST: EMAIL INVALIDO: {}", ex.getLocalizedMessage());
             return new ResponseEntity<>(EMAIL_INVALIDO, HttpStatus.BAD_REQUEST.value());
         }
 
         if (ex instanceof EmailAlreadyExistsException) {
-            log.info("[STATUS 400] - BAD REQUEST: ENDEREÇO DE EMAIL JÁ CADASTRADO EM UMA DAS BASES: {}", ex.getLocalizedMessage());
+            log.info("[STATUS 400] - BAD REQUEST: EMAIL JÁ CADASTRADO NAS BASES: {}", ex.getLocalizedMessage());
             return new ResponseEntity<>(EMAIL_EXISTENTE_TABELAS_CADASTRAIS, HttpStatus.BAD_REQUEST.value());
         }
 
         if (ex instanceof UsernameAlreadyExistsException) {
-            log.info("[STATUS 400] - BAD REQUEST: USUÁRIO JÁ CADASTRADO EM UMA DAS BASES: {}", ex.getLocalizedMessage());
+            log.info("[STATUS 400] - BAD REQUEST: USUÁRIO JÁ CADASTRADO NAS BASES: {}", ex.getLocalizedMessage());
             return new ResponseEntity<>(USUARIO_EXISTENTE_TABELAS_CADASTRAIS, HttpStatus.BAD_REQUEST.value());
         }
 
