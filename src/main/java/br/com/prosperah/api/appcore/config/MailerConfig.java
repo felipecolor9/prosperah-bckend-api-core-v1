@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.mail.*;
 import javax.mail.internet.MimeMessage;
+import java.util.LinkedHashMap;
 import java.util.Properties;
 
 @Configuration
@@ -24,27 +25,35 @@ public class MailerConfig {
     private String password;
 
     @Bean
-    public MimeMessage getDefaultSession() {
-        var props = new Properties();
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", String.valueOf(port));
-        props.put("mail.smtp.username", username);
-        props.put("mail.smtp.password", password);
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.EnableSSL.enable", "true");
-        props.put("mail.smtp.auth", "true");
+    public MimeMessage getDefaultMessage() {
 
-        props.put("mail.debug", "true");
-        props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.setProperty("mail.smtp.socketFactory.fallback", "false");
-        props.setProperty("mail.smtp.port", "465");
-        props.setProperty("mail.smtp.socketFactory.port", "465");
-        var session = Session.getDefaultInstance(props, new Authenticator() {
+        Session session = Session.getInstance(getSmtpProperties(), getAuthenticator());
+
+        return new MimeMessage(session);
+    }
+
+    private Authenticator getAuthenticator() {
+        return new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);
             }
-        });
-        return new MimeMessage(session);
+        };
+    }
+
+    private Properties getSmtpProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        properties.setProperty("mail.smtp.socketFactory.fallback", "false");
+        properties.setProperty("mail.smtp.port", "465");
+        properties.setProperty("mail.smtp.socketFactory.port", "465");
+
+        properties.put("mail.smtp.host", host);
+        properties.put("mail.smtp.port", port);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.ssl.enable", "true");
+
+        return properties;
     }
 
 }

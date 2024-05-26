@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import static br.com.prosperah.api.appcore.constants.Constants.EmailConstants.*;
+import static javax.mail.Message.RecipientType.TO;
+import static javax.mail.Transport.*;
+import static javax.mail.internet.InternetAddress.parse;
 
 @Service
 public class EmailAuthenticationService {
@@ -23,24 +25,22 @@ public class EmailAuthenticationService {
     public void sendAuthenticationEmail(String emailAddress, String token) {
         Message message = initMessage(emailAddress, token);
         try {
-            //TODO forma mais segura de passar credenciais (properties ou Authenticator)
-            Transport.send(message, "*", "*");
-            log.info("Email enviado para {}", emailAddress);
-        } catch (Exception e) {
-            log.error("Erro ao enviar email: {}", e.getMessage());
+            send(message);
+            log.info(EMAIL_ENVIADO, emailAddress);
+        } catch (Exception ex) {
+            log.error(EMAIL_ERRO, ex.getMessage());
         }
     }
 
 
-    private Message initMessage(String emailAdress, String token) {
-        var message = new MimeMessage(mailer.getDefaultSession().getSession());
+    private Message initMessage(String emailAddress, String token) {
+        var message = new MimeMessage(mailer.getDefaultMessage().getSession());
         try {
-            //TODO configuração de conta de email
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailAdress));
-            message.setSubject("Subject Here");
-            message.setText("This is the message body." + token);
-        } catch (Exception e) {
-            log.error("Erro ao enviar email: {}", e.getMessage());
+            message.setRecipients(TO, parse(emailAddress));
+            message.setSubject("Falta só mais um passo para voce concluir o cadastro!");
+            message.setText("Olá! utilize o código para se autenticar no sistema: " + token);
+        } catch (Exception ex) {
+            log.error(EMAIL_ERRO, ex.getMessage());
         }
         return message;
     }
