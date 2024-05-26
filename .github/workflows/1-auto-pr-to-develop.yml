@@ -1,7 +1,7 @@
 name: [LOCAL] Cria PR para develop
 
 on:
-  pull_request:
+  push:
     branches:
       - 'feature/*'
 
