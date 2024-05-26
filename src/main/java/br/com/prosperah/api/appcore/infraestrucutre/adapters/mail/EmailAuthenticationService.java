@@ -26,6 +26,7 @@ public class EmailAuthenticationService {
         Message message = initMessage(emailAddress, token);
         try {
             send(message);
+            System.out.println(token); //TODO Para testes - Remover futuramente
             log.info(EMAIL_ENVIADO, emailAddress);
         } catch (Exception ex) {
             log.error(EMAIL_ERRO, ex.getMessage());

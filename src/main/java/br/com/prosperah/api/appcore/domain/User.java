@@ -14,7 +14,7 @@ import java.util.UUID;
 @Builder
 public class User {
 
-    private UUID id;
+    //TODO DTO Validation
 
     private CadastralUser user;
 
@@ -34,13 +34,12 @@ public class User {
 
     public static User toUser(UserPersistData persistData) {
         return User.builder()
-                .id(ConvertUtils.convertBytesToUUID(persistData.getId()))
                 .username(persistData.getUsername())
                 .password(persistData.getPassword())
                 .fullName(persistData.getFullName())
                 .email(persistData.getEmail())
                 .creationDate(persistData.getCreationDate().toLocalDateTime())
-                .birthDate(persistData.getBirthDate().toLocalDateTime())
+//                .birthDate(persistData.getBirthDate().toLocalDateTime())
                 .validationDate(persistData.getValidationDate().toLocalDateTime())
                 .build();
     }

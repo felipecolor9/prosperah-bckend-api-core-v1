@@ -11,7 +11,7 @@ public class ConvertUtils {
      * @param uuid containing POJO unique id
      * @return id in byte format to persist in database
      */
-    public static byte[] convertUUIDToBytes(UUID uuid) {
+    public static byte[] ToBytes(UUID uuid) {
         ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
         bb.putLong(uuid.getMostSignificantBits());
         bb.putLong(uuid.getLeastSignificantBits());
@@ -24,7 +24,7 @@ public class ConvertUtils {
      * @param bytes containing persisted unique id
      * @return id in UUID format to operate in POJO
      */
-    public static UUID convertBytesToUUID(byte[] bytes) {
+    public static UUID toUUID(byte[] bytes) {
         ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
         long high = byteBuffer.getLong();
         long low = byteBuffer.getLong();

@@ -14,7 +14,7 @@ import java.util.UUID;
 @Builder
 public class CadastralUser {
 
-    private UUID id;
+    //TODO DTO Validation
 
     private String username;
 
@@ -28,7 +28,6 @@ public class CadastralUser {
 
     public static CadastralUser toCadastralUser(CadastralUserPersistData persistData) {
         return CadastralUser.builder()
-                .id(ConvertUtils.convertBytesToUUID(persistData.getId()))
                 .username(persistData.getUsername())
                 .password(persistData.getPassword())
                 .fullName(persistData.getFullName())
