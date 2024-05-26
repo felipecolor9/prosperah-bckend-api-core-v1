@@ -25,8 +25,7 @@ public class InfraUserService {
     public ResponseEntity<CadastralUser> createCadastralUser(CadastralUser user) throws BadRequestException {
         var persistedCadUser = datasource.saveCadastralUser(toPersistData(user));
 
-        persistedCadUser.ifPresent(cadastralUserPersistData ->
-                emailService.sendAuthenticationEmail(cadastralUserPersistData.getEmail(),
+        persistedCadUser.ifPresent(cadastralUserPersistData -> emailService.sendAuthenticationEmail(cadastralUserPersistData.getEmail(),
                 String.valueOf(cadastralUserPersistData.getCodAuth())));
 
         return new ResponseEntity<>(user, "Usuário criado com sucesso", 201);
