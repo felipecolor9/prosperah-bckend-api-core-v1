@@ -1,4 +1,4 @@
-name: Cria PR para develop
+name: Create Pull Request to Develop
 
 on:
   push:

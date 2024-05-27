@@ -1,4 +1,4 @@
-name: [DEV] Verifica build e testes
+name: Build and Test Java App
 
 on:
   pull_request:
