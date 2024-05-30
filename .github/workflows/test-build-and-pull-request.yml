@@ -34,14 +34,18 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
+      - name: Get current branch name
+        id: branch_name
+        run: echo "::set-output name=branch::$(echo $GITHUB_REF | awk -F'/' '{print $NF}')"
+
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: develop
-          head: feature/*  # Altere conforme necessário para a branch que deseja usar como origem
-          title: "Automated Pull Request - Build and Tests Passed"
+          head: branch_name
+          title: "[DEV] Pull request automático - Build and Tests"
           body: |
             This pull request was automatically created by a GitHub Action.
             All tests have passed and the build was successful.
