@@ -39,7 +39,6 @@ jobs:
   create_pr:
     needs: get_branch_name
     runs-on: ubuntu-latest
-    if: startsWith(steps.get_branch_name.outputs.branch, 'feature/')
     steps:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
