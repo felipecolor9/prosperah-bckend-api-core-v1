@@ -44,7 +44,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: develop
-          head: branch_name
+          head: ${{ steps.branch_name.outputs.branch }}
           title: "[DEV] Pull request automático - Build and Tests"
           body: |
             This pull request was automatically created by a GitHub Action.
