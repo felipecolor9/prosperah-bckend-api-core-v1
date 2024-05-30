@@ -1,5 +1,6 @@
 package br.com.prosperah.api.appcore.infraestrucutre.controller;
 
+import br.com.prosperah.api.appcore.constants.Constants;
 import br.com.prosperah.api.appcore.domain.CadastralUser;
 import br.com.prosperah.api.appcore.domain.User;
 import br.com.prosperah.api.appcore.domain.response.ResponseEntity;
@@ -23,6 +24,8 @@ public class UserController {
     @ResponseStatus(CREATED)
     public ResponseEntity<CadastralUser> createUser(@RequestBody CadastralUser user) throws BadRequestException {
         //TODO implementar retorno de headers para autenticação
+
+        if (user == null) throw new BadRequestException(Constants.REQUISICAO_BODY_VAZIO);
         return infraUserService.createCadastralUser(user);
     }
 

@@ -23,18 +23,28 @@ public class CustomExceptionHandler {
     public ResponseEntity<Object> handleBadRequest(BadRequestException ex) {
 
         if (ex instanceof InvalidEmailException) {
-            log.info("[STATUS 400] - BAD REQUEST: EMAIL INVALIDO: {}", ex.getLocalizedMessage());
-            return new ResponseEntity<>(EMAIL_INVALIDO, HttpStatus.BAD_REQUEST.value());
+            log.info(EMAIL_INVALIDO, ex.getLocalizedMessage());
+            return new ResponseEntity<>("[STATUS 400] - BAD REQUEST: Email com formato inválido.", HttpStatus.BAD_REQUEST.value());
         }
 
         if (ex instanceof EmailAlreadyExistsException) {
-            log.info("[STATUS 400] - BAD REQUEST: EMAIL JÁ CADASTRADO NAS BASES: {}", ex.getLocalizedMessage());
-            return new ResponseEntity<>(EMAIL_EXISTENTE_TABELAS_CADASTRAIS, HttpStatus.BAD_REQUEST.value());
+            log.info(EMAIL_EXISTENTE_TABELAS_CADASTRAIS, ex.getLocalizedMessage());
+            return new ResponseEntity<>("[STATUS 400] - BAD REQUEST: Email ja encontra-se em uso.", HttpStatus.BAD_REQUEST.value());
         }
 
         if (ex instanceof UsernameAlreadyExistsException) {
-            log.info("[STATUS 400] - BAD REQUEST: USUÁRIO JÁ CADASTRADO NAS BASES: {}", ex.getLocalizedMessage());
-            return new ResponseEntity<>(USUARIO_EXISTENTE_TABELAS_CADASTRAIS, HttpStatus.BAD_REQUEST.value());
+            log.info(USUARIO_EXISTENTE_TABELAS_CADASTRAIS, ex.getLocalizedMessage());
+            return new ResponseEntity<>("[STATUS 400] - BAD REQUEST: Usuário ja encontra-se em uso.", HttpStatus.BAD_REQUEST.value());
+        }
+
+        if (ex instanceof EmptyRequestBodyException) {
+            log.info(REQUISICAO_BODY_VAZIO, ex.getLocalizedMessage());
+            return new ResponseEntity<>("[STATUS 400] - BAD REQUEST: Body vazio.", HttpStatus.BAD_REQUEST.value());
+        }
+
+        if (ex instanceof EmptyFieldRequestBodyException) {
+            log.info(REQUISICAO_CAMPO_VAZIO, ex.getLocalizedMessage());
+            return new ResponseEntity<>("[STATUS 400] - BAD REQUEST: Campo encontra-se vazio.", HttpStatus.BAD_REQUEST.value());
         }
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST.getReasonPhrase(), HttpStatus.BAD_REQUEST.value());
