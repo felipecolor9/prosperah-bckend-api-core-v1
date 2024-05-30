@@ -6,9 +6,9 @@ on:
       - feature/*  # Altere conforme necessário para a branch que deseja monitorar
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -25,28 +25,27 @@ jobs:
       - name: Run tests
         run: mvn test
 
-  create-pull-request:
+  get_branch_name:
     needs: build
     runs-on: ubuntu-latest
-    if: success()
-
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Get current branch name
         id: branch_name
         run: echo "::set-output name=branch::$(echo $GITHUB_REF | awk -F'/' '{print $NF}')"
 
+  create_pr:
+    needs: get_branch_name
+    runs-on: ubuntu-latest
+    if: startsWith(steps.get_branch_name.outputs.branch, 'feature/')
+    steps:
       - name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ steps.get_branch_name.outputs.branch }}
+          title: "Merge to develop"
+          body: "This PR merges changes from ${{ steps.get_branch_name.outputs.branch }} into develop"
           base: develop
-          head: ${{ steps.branch_name.outputs.branch }}
-          title: "[DEV] Pull request automático - Build and Tests"
-          body: |
-            This pull request was automatically created by a GitHub Action.
-            All tests have passed and the build was successful.
-          branch: automated-pull-request-branch
