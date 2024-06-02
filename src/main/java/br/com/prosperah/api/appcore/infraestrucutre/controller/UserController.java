@@ -4,6 +4,8 @@ import br.com.prosperah.api.appcore.constants.Constants;
 import br.com.prosperah.api.appcore.domain.CadastralUser;
 import br.com.prosperah.api.appcore.domain.User;
 import br.com.prosperah.api.appcore.domain.response.ResponseEntity;
+import br.com.prosperah.api.appcore.exceptions.EmptyRequestBodyException;
+import br.com.prosperah.api.appcore.exceptions.UserNotFoundException;
 import br.com.prosperah.api.appcore.infraestrucutre.InfraUserService;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,6 @@ public class UserController {
     public ResponseEntity<CadastralUser> createUser(@RequestBody CadastralUser user) throws BadRequestException {
         //TODO implementar retorno de headers para autenticação
 
-        if (user == null) throw new BadRequestException(Constants.REQUISICAO_BODY_VAZIO);
         return infraUserService.createCadastralUser(user);
     }
 
@@ -34,7 +35,7 @@ public class UserController {
     public ResponseEntity<User> createUser(@RequestHeader("Auth-Code") String authCode,
                                            @RequestHeader("Session-Hash") String sessionId,
                                            @RequestHeader("User-Email") String userEmail,
-                                           @PathVariable("userId") String clientId) throws BadRequestException {
+                                           @PathVariable("userId") String clientId) throws BadRequestException, UserNotFoundException {
 
         return infraUserService.validateCadastralUser(clientId, authCode, sessionId, userEmail);
     }
