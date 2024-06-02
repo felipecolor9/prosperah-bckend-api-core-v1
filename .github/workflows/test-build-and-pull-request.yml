@@ -25,18 +25,8 @@ jobs:
       - name: Run tests
         run: mvn test
 
-  get_branch_name:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Get current branch name
-        id: branch_name
-        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
-
   create-pull-request:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Create Pull Request
