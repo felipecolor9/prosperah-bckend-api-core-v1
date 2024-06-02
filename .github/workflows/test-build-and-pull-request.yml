@@ -34,7 +34,8 @@ jobs:
 
       - name: Get current branch name
         id: branch_name
-        run: echo "::set-output name=branch::$(echo $GITHUB_REF | awk -F'/' '{print $NF}')"
+        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
+
 
   create_pr:
     needs: get_branch_name
@@ -44,7 +45,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ steps.get_branch_name.outputs.branch }}
+          branch: ${{ steps.get_branch_name.outputs.branch_name }}
           title: "Merge to develop"
           body: "This PR merges changes from ${{ steps.get_branch_name.outputs.branch }} into develop"
           base: develop
