@@ -15,4 +15,6 @@ public interface CadastralRepository extends JpaRepository<CadastralUserPersistD
     boolean existsByEmail(String email);
 
     Optional<CadastralUserPersistData> findById(byte[] clientId);
+    @Query("SELECT COUNT(u) FROM CadastralUserPersistData u WHERE u.codAuth = :codAuth")
+    boolean existsByCodAuth(int i);
 }
