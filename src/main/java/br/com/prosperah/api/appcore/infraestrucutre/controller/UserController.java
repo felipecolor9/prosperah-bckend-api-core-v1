@@ -8,6 +8,7 @@ import br.com.prosperah.api.appcore.domain.response.ResponseEntity;
 import br.com.prosperah.api.appcore.exceptions.EmptyRequestBodyException;
 import br.com.prosperah.api.appcore.exceptions.UserNotFoundException;
 import br.com.prosperah.api.appcore.infraestrucutre.InfraUserService;
+import io.swagger.annotations.Api;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/psph/api/v1/users")
+@Api(tags = "UserController")
 public class UserController {
 
     //TODO Exceptions para headers,body,params inválidos
@@ -32,7 +34,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/authenticate")
-    @ResponseStatus(OK)
+    @ResponseStatus(CREATED)
     public ResponseEntity<User> createUser(@RequestHeader("Auth-Code") String authCode,
                                            @RequestHeader("Session-Hash") String sessionId,
                                            @RequestHeader("User-Email") String userEmail,
