@@ -1,5 +1,6 @@
 package br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource;
 
+import br.com.prosperah.api.appcore.domain.LoginUserForm;
 import br.com.prosperah.api.appcore.exceptions.EmailAlreadyExistsException;
 import br.com.prosperah.api.appcore.exceptions.UserNotFoundException;
 import br.com.prosperah.api.appcore.exceptions.UsernameAlreadyExistsException;
@@ -64,6 +65,12 @@ public class DatasourceService implements DatasourcePort {
 
         return empty();
     }
+
+    @Override
+    public Optional<UserPersistData> findAndLogUser(LoginUserForm form) {
+        return userRepository.findByUsernameAndPassword(form.getUsername(), form.getPassword());
+    }
+
 
     private boolean isCadastralUserAvailable(String username, String email) throws BadRequestException {
         if (cadastralRepository.existsByUsername(username) || userRepository.existsByUsername(username))

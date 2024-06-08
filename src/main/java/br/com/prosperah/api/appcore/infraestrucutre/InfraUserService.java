@@ -2,6 +2,7 @@ package br.com.prosperah.api.appcore.infraestrucutre;
 
 import br.com.prosperah.api.appcore.constants.Constants;
 import br.com.prosperah.api.appcore.domain.CadastralUser;
+import br.com.prosperah.api.appcore.domain.LoginUserForm;
 import br.com.prosperah.api.appcore.domain.User;
 import br.com.prosperah.api.appcore.exceptions.EmptyRequestBodyException;
 import br.com.prosperah.api.appcore.exceptions.UserNotFoundException;
@@ -38,9 +39,16 @@ public class InfraUserService {
         return new ResponseEntity<>(user, "Usuário criado com sucesso", 201);
     }
 
+    @Transactional
     public ResponseEntity<User> validateCadastralUser(String clientId, String authCode,String sessionId, String userEmail) throws BadRequestException, UserNotFoundException {
         var persistedUser = datasource.saveConsolidatedUser(clientId, authCode, sessionId, userEmail);
         return persistedUser.map(userPersistData -> new ResponseEntity<>(toUser(userPersistData), "Usuário validado com sucesso", 201)).orElse(null);
     }
+    public ResponseEntity<User> loginAndAuthorize(LoginUserForm form) throws UserNotFoundException {
+        var foundUser = datasource.findAndLogUser(form);
+        if (foundUser.isPresent()) return new ResponseEntity<>(toUser(foundUser.get()), "Usuário encontrado com sucesso", 200);
+        else throw new UserNotFoundException();
+    }
+
 
 }
