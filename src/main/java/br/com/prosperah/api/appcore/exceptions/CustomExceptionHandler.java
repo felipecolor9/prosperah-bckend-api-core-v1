@@ -19,7 +19,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @ControllerAdvice
 @RestControllerAdvice
 public class CustomExceptionHandler {
-    private static final Logger log = LoggerFactory.getLogger(DatasourceService.class);
+    private static final Logger log = LoggerFactory.getLogger(CustomExceptionHandler.class);
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(BAD_REQUEST)
@@ -27,34 +27,33 @@ public class CustomExceptionHandler {
 
         if (ex instanceof InvalidEmailException) {
             log.info(EMAIL_INVALIDO, ex.getLocalizedMessage());
-            return new ResponseEntity<>("[STATUS 400] - BAD REQUEST: Email com formato inválido.", BAD_REQUEST.value());
+            return new ResponseEntity<>("Email com formato inválido.", BAD_REQUEST.value());
         }
 
         if (ex instanceof EmailAlreadyExistsException) {
             log.info(EMAIL_EXISTENTE_TABELAS_CADASTRAIS, ex.getLocalizedMessage());
-            return new ResponseEntity<>("[STATUS 400] - BAD REQUEST: Email ja encontra-se em uso.", BAD_REQUEST.value());
+            return new ResponseEntity<>("Email ja encontra-se em uso.", BAD_REQUEST.value());
         }
 
         if (ex instanceof UsernameAlreadyExistsException) {
             log.info(USUARIO_EXISTENTE_TABELAS_CADASTRAIS, ex.getLocalizedMessage());
-            return new ResponseEntity<>("[STATUS 400] - BAD REQUEST: Usuário ja encontra-se em uso.", BAD_REQUEST.value());
+            return new ResponseEntity<>("Usuário ja encontra-se em uso.", BAD_REQUEST.value());
         }
 
         if (ex instanceof EmptyRequestBodyException) {
             log.info(REQUISICAO_BODY_VAZIO, ex.getLocalizedMessage());
-            return new ResponseEntity<>("[STATUS 400] - BAD REQUEST: Body vazio.", BAD_REQUEST.value());
+            return new ResponseEntity<>("Body de requisição vazio.", BAD_REQUEST.value());
         }
 
         if (ex instanceof EmptyFieldRequestBodyException) {
             log.info(REQUISICAO_CAMPO_VAZIO, ex.getLocalizedMessage());
-            return new ResponseEntity<>("[STATUS 400] - BAD REQUEST: Campo encontra-se vazio.", BAD_REQUEST.value());
+            return new ResponseEntity<>("Campo encontra-se vazio.", BAD_REQUEST.value());
         }
 
         if (ex instanceof WrongAuthCodeException) {
             log.info(CODIGO_AUTENTICACAO_INVALIDO, ex.getLocalizedMessage());
-            return new ResponseEntity<>("[STATUS 400] - BAD REQUEST: Código de autenticação errado ou com formato inválido.", BAD_REQUEST.value());
+            return new ResponseEntity<>("Código de autenticação errado ou com formato inválido.", BAD_REQUEST.value());
         }
-
         return new ResponseEntity<>(BAD_REQUEST.getReasonPhrase(), BAD_REQUEST.value());
     }
 
@@ -64,9 +63,8 @@ public class CustomExceptionHandler {
 
         if (ex instanceof UserNotFoundException) {
             log.info(USUARIO_NAO_ENCONTRADO, ex.getLocalizedMessage());
-            return new ResponseEntity<>("[STATUS 404] - NOT FOUND: Usuário não encontrado.", BAD_REQUEST.value());
+            return new ResponseEntity<>("Usuário ou senha incorretos.", NOT_FOUND.value());
         }
         return new ResponseEntity<>(NOT_FOUND.getReasonPhrase(), NOT_FOUND.value());
-
     }
 }

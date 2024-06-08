@@ -2,6 +2,7 @@ package br.com.prosperah.api.appcore.infraestrucutre.controller;
 
 import br.com.prosperah.api.appcore.constants.Constants;
 import br.com.prosperah.api.appcore.domain.CadastralUser;
+import br.com.prosperah.api.appcore.domain.LoginUserForm;
 import br.com.prosperah.api.appcore.domain.User;
 import br.com.prosperah.api.appcore.domain.response.ResponseEntity;
 import br.com.prosperah.api.appcore.exceptions.EmptyRequestBodyException;
@@ -40,5 +41,9 @@ public class UserController {
         return infraUserService.validateCadastralUser(clientId, authCode, sessionId, userEmail);
     }
 
-
+    @GetMapping("/login")
+    @ResponseStatus(OK)
+    public ResponseEntity<User> loginUser(@RequestBody LoginUserForm loginForm) throws UserNotFoundException {
+        return infraUserService.loginAndAuthorize(loginForm);
+    }
 }
