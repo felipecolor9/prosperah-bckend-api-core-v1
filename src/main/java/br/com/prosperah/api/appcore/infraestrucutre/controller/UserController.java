@@ -16,15 +16,15 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/psph/api/v1/users")
-@Api(tags = "UserController")
+@RequestMapping("/psph/api/v1")
+@Api(tags = "Users")
 public class UserController {
 
     //TODO Exceptions para headers,body,params inválidos
     @Autowired
     InfraUserService infraUserService;
 
-    @PostMapping("/register")
+    @PostMapping("users/register")
     @ResponseStatus(CREATED)
     public ResponseEntity<CadastralUser> createUser(@RequestBody CadastralUser user) throws BadRequestException {
         //TODO implementar retorno de headers para autenticação
@@ -32,7 +32,7 @@ public class UserController {
         return infraUserService.createCadastralUser(user);
     }
 
-    @PutMapping("/{userId}/authenticate")
+    @PutMapping("users/{userId}/authenticate")
     @ResponseStatus(CREATED)
     public ResponseEntity<User> createUser(@RequestHeader("Auth-Code") String authCode,
                                            @RequestHeader("Session-Hash") String sessionId,
@@ -42,7 +42,7 @@ public class UserController {
         return infraUserService.validateCadastralUser(clientId, authCode, sessionId, userEmail);
     }
 
-    @GetMapping("/login")
+    @GetMapping("users/login")
     @ResponseStatus(OK)
     public ResponseEntity<Wallet> loginUser(@RequestBody LoginUserForm loginForm) throws UserNotFoundException {
         return infraUserService.loginAndAuthorize(loginForm);

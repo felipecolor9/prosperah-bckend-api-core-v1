@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+import static br.com.prosperah.api.appcore.domain.Wallet.toWallet;
 import static br.com.prosperah.api.appcore.utils.ConvertUtils.toUUID;
 import static java.util.UUID.randomUUID;
 
@@ -57,4 +58,7 @@ public class WalletDatasourceService {
                 .build();
     }
 
+    public Wallet updateWallet(WalletPersistData persistData) {
+        return toWallet(walletRepository.save(persistData));
+    }
 }
