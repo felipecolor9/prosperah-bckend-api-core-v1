@@ -10,7 +10,6 @@ import br.com.prosperah.api.appcore.exceptions.UserNotFoundException;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.UserDatasourceService;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.WalletDatasourceService;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.mail.EmailAuthenticationService;
-import br.com.prosperah.api.appcore.utils.ConvertUtils;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

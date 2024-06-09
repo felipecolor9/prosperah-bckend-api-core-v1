@@ -31,13 +31,11 @@ mail:
   protocol:
     transport-strategy: SMTP_TLS
   smtp:
-    host: smtp.default.com
+    host: smtp.googlemail.com
     port: 25
-    # TODO Achar forma de passar usuario e senha do email de forma criptografada
-    username: username
-    password: password
+    username:
+    password:
   defaults:
     content:
       transfer:
         encoding: BINARY
-
