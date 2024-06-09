@@ -3,6 +3,7 @@ package br.com.prosperah.api.appcore.infraestrucutre.controller;
 import br.com.prosperah.api.appcore.domain.CadastralUser;
 import br.com.prosperah.api.appcore.domain.LoginUserForm;
 import br.com.prosperah.api.appcore.domain.User;
+import br.com.prosperah.api.appcore.domain.Wallet;
 import br.com.prosperah.api.appcore.domain.response.ResponseEntity;
 import br.com.prosperah.api.appcore.exceptions.UserNotFoundException;
 import br.com.prosperah.api.appcore.infraestrucutre.InfraUserService;
@@ -43,7 +44,7 @@ public class UserController {
 
     @GetMapping("/login")
     @ResponseStatus(OK)
-    public ResponseEntity<User> loginUser(@RequestBody LoginUserForm loginForm) throws UserNotFoundException {
+    public ResponseEntity<Wallet> loginUser(@RequestBody LoginUserForm loginForm) throws UserNotFoundException {
         return infraUserService.loginAndAuthorize(loginForm);
     }
 }

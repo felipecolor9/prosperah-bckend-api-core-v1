@@ -1,6 +1,7 @@
 package br.com.prosperah.api.appcore.domain;
 
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model.WalletPersistData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +13,7 @@ import java.sql.Timestamp;
 @Builder
 public class Wallet {
 
+    @JsonIgnore
     private byte[] userId;
 
     private double fixedAssetsPatrimony;
