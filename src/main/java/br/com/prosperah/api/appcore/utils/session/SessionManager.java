@@ -1,10 +1,10 @@
-package br.com.prosperah.api.appcore.infraestrucutre.session;
+package br.com.prosperah.api.appcore.utils.session;
 
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
-import java.security.SecureRandom;
 import java.math.BigInteger;
+import java.security.SecureRandom;
 
 @Component
 public class SessionManager {

@@ -10,7 +10,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import static springfox.documentation.builders.PathSelectors.*;
 import static springfox.documentation.builders.RequestHandlerSelectors.basePackage;
 
 
@@ -32,7 +31,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("API CORE - PROSPERAH")
                 .description("Operações básicas para o sistema PROSPERAH")
-                .contact(new Contact("Felipe Marues", "https://www.github.com/felipecolor9", "felipe.m199@gmail.com"))
+                .contact(new Contact("Felipe Marques", "https://www.github.com/felipecolor9", "felipe.m199@gmail.com"))
                 .license("Apache License Version 2.0")
                 .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
                 .version("1.0")

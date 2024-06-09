@@ -1,13 +1,11 @@
 package br.com.prosperah.api.appcore.domain;
 
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model.UserPersistData;
-import br.com.prosperah.api.appcore.utils.ConvertUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -15,8 +13,6 @@ import java.util.UUID;
 public class User {
 
     //TODO DTO Validation
-
-    private CadastralUser user;
 
     private String username;
 
@@ -26,7 +22,6 @@ public class User {
 
     private String email;
 
-    private LocalDateTime creationDate;
 
     private LocalDateTime birthDate;
 
@@ -38,7 +33,6 @@ public class User {
                 .password(persistData.getPassword())
                 .fullName(persistData.getFullName())
                 .email(persistData.getEmail())
-                .creationDate(persistData.getCreationDate().toLocalDateTime())
 //                .birthDate(persistData.getBirthDate().toLocalDateTime())
                 .validationDate(persistData.getValidationDate().toLocalDateTime())
                 .build();

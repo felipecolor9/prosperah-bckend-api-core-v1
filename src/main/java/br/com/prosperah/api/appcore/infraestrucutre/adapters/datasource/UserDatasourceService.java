@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-import static br.com.prosperah.api.appcore.constants.Constants.*;
+import static br.com.prosperah.api.appcore.constants.Constants.USUARIO_CRIADO;
 import static br.com.prosperah.api.appcore.utils.ConvertUtils.ToBytes;
 import static br.com.prosperah.api.appcore.utils.GeneralUtils.generateRandomSixDigitNumber;
 import static br.com.prosperah.api.appcore.utils.ValidationUtils.isValidEmail;
@@ -29,9 +29,9 @@ import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 
 @Service
-public class DatasourceService implements DatasourcePort {
+public class UserDatasourceService {
 
-    private static final Logger log = LoggerFactory.getLogger(DatasourceService.class);
+    private static final Logger log = LoggerFactory.getLogger(UserDatasourceService.class);
 
     @Autowired
     CadastralRepository cadastralRepository;
@@ -39,38 +39,38 @@ public class DatasourceService implements DatasourcePort {
     @Autowired
     UserRepository userRepository;
 
+
+
     public Optional<CadastralUserPersistData> saveCadastralUser(CadastralUserPersistData cadUser) throws BadRequestException {
         var email = cadUser.getEmail();
         var username = cadUser.getUsername();
         if (isValidEmail(email) && isCadastralUserAvailable(username, email)) {
-
-            var idTeste = randomUUID();
-            System.out.println(idTeste);
             cadUser.setCodAuth(generateRandomSixDigitNumber());
-            cadUser.setId(ToBytes(idTeste));
+            var uuid= randomUUID();//TODO TESTS ONLY
+            System.out.println(uuid);
+            cadUser.setCreationDate(Timestamp.valueOf(LocalDateTime.now()));
+            cadUser.setId(ToBytes(uuid));
             cadastralRepository.save(cadUser);
+
             log.info(USUARIO_CRIADO, username);
             return Optional.of(cadUser);
         }
         return empty();
     }
 
-    @Override
-    public Optional<UserPersistData> saveConsolidatedUser(String clientId, String authCode, String sessionId, String userEmail) throws BadRequestException, UserNotFoundException {
-        var clientIdBytes = ToBytes(UUID.fromString(clientId));
+    public Optional<UserPersistData> saveConsolidatedUser(String userId, String authCode, String sessionId, String userEmail) throws BadRequestException, UserNotFoundException {
+        var clientIdBytes = ToBytes(UUID.fromString(userId));
         var userFound = cadastralRepository.findById(clientIdBytes).orElseThrow(UserNotFoundException::new);
 
-        if (isConsolidatedUserAvailable(userFound.getUsername(), userFound.getEmail()) && verifyAuthCode(parseInt(authCode)))
+        if (isConsolidatedUserAvailable(userFound.getUsername(), userFound.getEmail()) && verifyAuthCode(parseInt(authCode))) {
             return Optional.of(userRepository.save(initConsolidatedUser(clientIdBytes, userFound)));
-
+        }
         return empty();
     }
 
-    @Override
     public Optional<UserPersistData> findAndLogUser(LoginUserForm form) {
         return userRepository.findByUsernameAndPassword(form.getUsername(), form.getPassword());
     }
-
 
     private boolean isCadastralUserAvailable(String username, String email) throws BadRequestException {
         if (cadastralRepository.existsByUsername(username) || userRepository.existsByUsername(username))

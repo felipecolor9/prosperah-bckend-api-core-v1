@@ -1,7 +1,5 @@
 package br.com.prosperah.api.appcore.utils;
 
-import java.util.Random;
-
 public class GeneralUtils {
     static final int MIN_VALUE = 100000;
     static final int MAX_VALUE = 999999;

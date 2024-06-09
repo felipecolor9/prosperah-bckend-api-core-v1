@@ -1,16 +1,17 @@
 package br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model;
 
 import br.com.prosperah.api.appcore.domain.CadastralUser;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import java.sql.Timestamp;
-
-import static br.com.prosperah.api.appcore.utils.ConvertUtils.ToBytes;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor @NoArgsConstructor
@@ -45,10 +46,10 @@ public class CadastralUserPersistData {
     public static CadastralUserPersistData toPersistData(CadastralUser user) {
         return CadastralUserPersistData.builder()
                 .username(user.getUsername())
-                .password(user.getPassword())
                 .fullName(user.getFullName())
+                .password(user.getPassword())
                 .email(user.getEmail())
-                .creationDate(Timestamp.valueOf(user.getCreationDate()))
+                .creationDate(Timestamp.valueOf(LocalDateTime.now()))
                 .build();
     }
 }
