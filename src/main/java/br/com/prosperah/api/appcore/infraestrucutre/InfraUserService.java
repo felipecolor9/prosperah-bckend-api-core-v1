@@ -4,6 +4,7 @@ import br.com.prosperah.api.appcore.constants.Constants;
 import br.com.prosperah.api.appcore.domain.CadastralUser;
 import br.com.prosperah.api.appcore.domain.LoginUserForm;
 import br.com.prosperah.api.appcore.domain.User;
+import br.com.prosperah.api.appcore.domain.Wallet;
 import br.com.prosperah.api.appcore.domain.response.ResponseEntity;
 import br.com.prosperah.api.appcore.exceptions.EmptyRequestBodyException;
 import br.com.prosperah.api.appcore.exceptions.UserNotFoundException;
@@ -11,13 +12,18 @@ import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.UserData
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.WalletDatasourceService;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.mail.EmailAuthenticationService;
 import org.apache.coyote.BadRequestException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import java.util.Optional;
+
 import static br.com.prosperah.api.appcore.domain.User.toUser;
 import static br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model.CadastralUserPersistData.toPersistData;
+import static br.com.prosperah.api.appcore.utils.ConvertUtils.toUUID;
 
 @Service
 public class InfraUserService {
@@ -31,6 +37,7 @@ public class InfraUserService {
     @Autowired
     EmailAuthenticationService emailService;
 
+    private static final Logger log = LoggerFactory.getLogger(InfraUserService.class);
 
     @Transactional
     public ResponseEntity<CadastralUser> createCadastralUser(CadastralUser user) throws BadRequestException {
@@ -45,18 +52,29 @@ public class InfraUserService {
     }
 
     @Transactional
-    public ResponseEntity<User> validateCadastralUser(String clientId, String authCode,String sessionId, String userEmail) throws BadRequestException, UserNotFoundException {
+    public ResponseEntity<User> validateCadastralUser(String clientId, String authCode, String sessionId, String userEmail) throws BadRequestException, UserNotFoundException {
         var persistedUser = userDatasource.saveConsolidatedUser(clientId, authCode, sessionId, userEmail).orElseThrow(BadRequestException::new);
 
         walletDatasource.createWallet(persistedUser.getId());
 
         return new ResponseEntity<>(toUser(persistedUser), "Usuário validado com sucesso", 201);
     }
-    public ResponseEntity<User> loginAndAuthorize(LoginUserForm form) throws UserNotFoundException {
+
+    public ResponseEntity<Wallet> loginAndAuthorize(LoginUserForm form) throws UserNotFoundException {
+        Optional<Wallet> userWallet;
         var foundUser = userDatasource.findAndLogUser(form);
-        if (foundUser.isPresent()) return new ResponseEntity<>(toUser(foundUser.get()), "Usuário encontrado com sucesso", 200);
-        else throw new UserNotFoundException();
+
+        if (foundUser.isPresent()) {
+            userWallet = walletDatasource.loadWallet(foundUser.get().getId());
+
+            if (userWallet.isEmpty()) {
+                log.info("Carteira não encontrada, criando uma nova carteira para o usuário: {}", toUUID(foundUser.get().getId()));
+                userWallet = walletDatasource.recreateWallet(foundUser.get().getId()).map(Wallet::toWallet);
+                return new ResponseEntity<>(userWallet.get(), "Usuário encontrado com sucesso! Carteira criada com sucesso!", 201);
+            }
+
+            return new ResponseEntity<>(userWallet.get(), "Usuário encontrado com sucesso! Carteira encontrada e recuperada", 200);
+        }
+        throw new UserNotFoundException();
     }
-
-
 }

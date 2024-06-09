@@ -1,5 +1,6 @@
 package br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource;
 
+import br.com.prosperah.api.appcore.domain.Wallet;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model.WalletPersistData;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.repository.WalletRepository;
 import br.com.prosperah.api.appcore.utils.ConvertUtils;
@@ -10,7 +11,11 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
+
+import static br.com.prosperah.api.appcore.utils.ConvertUtils.toUUID;
+import static java.util.UUID.randomUUID;
 
 @Service
 public class WalletDatasourceService {
@@ -22,7 +27,7 @@ public class WalletDatasourceService {
 
     public void createWallet(byte[] userId) {
 
-        if (walletRepository.findById(userId).isEmpty()) {
+        if (walletRepository.findByUserId(userId).isEmpty()) {
 
             log.info("Creating wallet...");
             walletRepository.save(initializeWallet(userId));
@@ -31,9 +36,18 @@ public class WalletDatasourceService {
         } else log.error("internal error - wallet already exists!");
     }
 
+    public Optional<WalletPersistData> recreateWallet(byte[] userId) {
+        log.info("Recriando carteira para o usuário: {}", toUUID(userId));
+        return Optional.of(walletRepository.save(initializeWallet(userId)));
+    }
+
+    public Optional<Wallet> loadWallet(byte[] userId) {
+        return walletRepository.findByUserId(userId).map(Wallet::toWallet);
+    }
+
     private WalletPersistData initializeWallet(byte[] userId) {
         return WalletPersistData.builder()
-                .id(ConvertUtils.ToBytes(UUID.randomUUID()))
+                .id(ConvertUtils.ToBytes(randomUUID()))
                 .userId(userId)
                 .fixedAssetsRentability(0.0)
                 .fixedAssetsPatrimony(0.0)
