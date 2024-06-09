@@ -1,12 +1,11 @@
-package br.com.prosperah.api.appcore.exceptions;
+package br.com.prosperah.api.appcore.handler;
 
-import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.DatasourceService;
 import br.com.prosperah.api.appcore.domain.response.ResponseEntity;
+import br.com.prosperah.api.appcore.exceptions.*;
 import javassist.NotFoundException;
 import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -6,10 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
-
-import static br.com.prosperah.api.appcore.utils.ConvertUtils.ToBytes;
 
 @Data
 @AllArgsConstructor
@@ -48,14 +49,13 @@ public class UserPersistData {
     @Column(name = "usr_data_validacao")
     private Timestamp validationDate;
 
-    public UserPersistData toPersistData(User user) {
+    public static UserPersistData toPersistData(User user) {
         return UserPersistData.builder()
                 .username(user.getUsername())
-                .password(user.getPassword())
                 .fullName(user.getFullName())
+                .password(user.getPassword())
                 .email(user.getEmail())
 //                .birthDate(Timestamp.valueOf(user.getBirthDate()))
-                .creationDate(Timestamp.valueOf(user.getCreationDate()))
                 .validationDate(Timestamp.valueOf(user.getValidationDate()))
                 .build();
     }
