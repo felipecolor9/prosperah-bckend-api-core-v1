@@ -1,7 +1,11 @@
 package br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource;
 
+import br.com.prosperah.api.appcore.domain.FinancialMovement;
 import br.com.prosperah.api.appcore.domain.Wallet;
+import br.com.prosperah.api.appcore.exceptions.InvalidOperationException;
+import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model.FinancialMovementPersistData;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model.WalletPersistData;
+import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.repository.FinancialMovementRepository;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.repository.WalletRepository;
 import br.com.prosperah.api.appcore.utils.ConvertUtils;
 import org.slf4j.Logger;
@@ -12,10 +16,11 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
-import static br.com.prosperah.api.appcore.domain.Wallet.toWallet;
+import static br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model.FinancialMovementPersistData.toPersistData;
+import static br.com.prosperah.api.appcore.utils.ConvertUtils.ToBytes;
 import static br.com.prosperah.api.appcore.utils.ConvertUtils.toUUID;
+import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 
 @Service
@@ -26,29 +31,21 @@ public class WalletDatasourceService {
     @Autowired
     WalletRepository walletRepository;
 
-    public void createWallet(byte[] userId) {
-
-        if (walletRepository.findByUserId(userId).isEmpty()) {
-
-            log.info("Creating wallet...");
-            walletRepository.save(initializeWallet(userId));
-
-            log.info("Wallet created with success");
-        } else log.error("internal error - wallet already exists!");
-    }
+    @Autowired
+    FinancialMovementRepository finMovementRepository;
 
     public Optional<WalletPersistData> recreateWallet(byte[] userId) {
-        log.info("Recriando carteira para o usuário: {}", toUUID(userId));
+        log.warn("Carteira não encontrada! Recriando carteira para o usuário: {}", toUUID(userId));
         return Optional.of(walletRepository.save(initializeWallet(userId)));
     }
 
-    public Optional<Wallet> loadWallet(byte[] userId) {
-        return walletRepository.findByUserId(userId).map(Wallet::toWallet);
+    public Optional<WalletPersistData> loadWallet(byte[] userId) {
+        return walletRepository.findByUserId(userId);
     }
 
     private WalletPersistData initializeWallet(byte[] userId) {
         return WalletPersistData.builder()
-                .id(ConvertUtils.ToBytes(randomUUID()))
+                .id(ToBytes(randomUUID()))
                 .userId(userId)
                 .fixedAssetsRentability(0.0)
                 .fixedAssetsPatrimony(0.0)
@@ -58,7 +55,32 @@ public class WalletDatasourceService {
                 .build();
     }
 
-    public Wallet updateWallet(WalletPersistData persistData) {
-        return toWallet(walletRepository.save(persistData));
+    public WalletPersistData registerFinancialMovement(FinancialMovement movement, String userId) throws InvalidOperationException {
+        var foundWallet = loadWallet(ToBytes(fromString(userId)));
+
+        if (foundWallet.isEmpty()) {
+            log.warn("Carteira não encontrada! Recriando carteira para o usuário: {}", userId);
+            return initializeWallet(ToBytes(fromString(userId)));
+        }
+
+        movement.setWalletId(foundWallet.get().getId());
+        movement.setId(ConvertUtils.ToBytes(randomUUID()));
+        movement.setOwnerId(ToBytes(fromString(userId)));
+        movement.setOperationDate(Timestamp.valueOf(LocalDateTime.now()));
+
+        var savedMovement = finMovementRepository.save(toPersistData(movement));
+        updateWalletPatrimony(savedMovement.getApplyValueBRL(), savedMovement.getWalletOperationtypeCode(), foundWallet.get());
+
+        log.info("Movimentação da carteira [] registrada com sucesso", savedMovement.getWalletId());
+    return foundWallet.get();
+    }
+
+    private void updateWalletPatrimony(double valueBRL, int operation, WalletPersistData wallet) throws InvalidOperationException {
+
+        if (operation == 1) wallet.setFixedAssetsPatrimony(wallet.getFixedAssetsPatrimony() + valueBRL);
+        else if (operation == 2) wallet.setFixedAssetsPatrimony(wallet.getFixedAssetsPatrimony() - valueBRL);
+        else throw new InvalidOperationException();
+
+        walletRepository.updateWalletPatrimony(wallet.getId(), wallet.getFixedAssetsPatrimony());
     }
 }

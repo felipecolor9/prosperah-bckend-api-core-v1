@@ -4,16 +4,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class WalletApply {
+public class FinancialMovement {
 
     @JsonIgnore
-    private byte[] codMovFin;
+    private byte[] id;
 
     @JsonIgnore
     private byte[] walletId;
@@ -23,10 +25,11 @@ public class WalletApply {
 
     private float applyValueBRL;
 
-    @JsonIgnore
-    private int brokerCode; //Enum
+    private int brokerCode;
 
-    private char walletOperationtypeCode; //Enum
-    private float FinMovementAmount;
+    private int walletOperationCode;
+
+    private float finMovementAmount;
+
     private Timestamp operationDate;
 }
