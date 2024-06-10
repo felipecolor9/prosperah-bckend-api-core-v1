@@ -1,11 +1,14 @@
 package br.com.prosperah.api.appcore.infraestrucutre;
 
+import br.com.prosperah.api.appcore.domain.FinancialMovement;
 import br.com.prosperah.api.appcore.domain.Wallet;
 import br.com.prosperah.api.appcore.domain.response.ResponseEntity;
+import br.com.prosperah.api.appcore.exceptions.InvalidOperationException;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.WalletDatasourceService;
-import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model.WalletPersistData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static br.com.prosperah.api.appcore.domain.Wallet.toWallet;
 
 @Service
 
@@ -14,8 +17,9 @@ public class InfraWalletService {
     @Autowired
     WalletDatasourceService walletDatasource;
 
-    public ResponseEntity<Wallet> updateWallet(Wallet wallet) {
-        return new ResponseEntity<>(walletDatasource.updateWallet(WalletPersistData.toPersistData(wallet)),
-                "Carteira atualizada com sucesso!", 200);
+    public ResponseEntity<Wallet> updateWallet(FinancialMovement movement, String userId) throws InvalidOperationException {
+        return new ResponseEntity<>(toWallet(walletDatasource.registerFinancialMovement(movement, userId)),
+                "Movimentação registrada com sucesso", 201);
     }
 }
+

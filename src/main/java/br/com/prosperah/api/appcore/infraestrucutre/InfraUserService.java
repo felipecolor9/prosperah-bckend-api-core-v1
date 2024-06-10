@@ -11,6 +11,7 @@ import br.com.prosperah.api.appcore.exceptions.UserNotFoundException;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.UserDatasourceService;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.WalletDatasourceService;
 import br.com.prosperah.api.appcore.infraestrucutre.adapters.mail.EmailAuthenticationService;
+import br.com.prosperah.api.appcore.utils.ConvertUtils;
 import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static br.com.prosperah.api.appcore.domain.User.toUser;
 import static br.com.prosperah.api.appcore.infraestrucutre.adapters.datasource.model.CadastralUserPersistData.toPersistData;
@@ -54,9 +56,6 @@ public class InfraUserService {
     @Transactional
     public ResponseEntity<User> validateCadastralUser(String clientId, String authCode, String sessionId, String userEmail) throws BadRequestException, UserNotFoundException {
         var persistedUser = userDatasource.saveConsolidatedUser(clientId, authCode, sessionId, userEmail).orElseThrow(BadRequestException::new);
-
-        walletDatasource.createWallet(persistedUser.getId());
-
         return new ResponseEntity<>(toUser(persistedUser), "Usuário validado com sucesso", 201);
     }
 
@@ -65,11 +64,10 @@ public class InfraUserService {
         var foundUser = userDatasource.findAndLogUser(form);
 
         if (foundUser.isPresent()) {
-            userWallet = walletDatasource.loadWallet(foundUser.get().getId());
+            userWallet = walletDatasource.loadWallet(foundUser.get().getCadastralUser()).map(Wallet::toWallet);
 
             if (userWallet.isEmpty()) {
-                log.info("Carteira não encontrada, criando uma nova carteira para o usuário: {}", toUUID(foundUser.get().getId()));
-                userWallet = walletDatasource.recreateWallet(foundUser.get().getId()).map(Wallet::toWallet);
+                userWallet = walletDatasource.recreateWallet(foundUser.get().getCadastralUser()).map(Wallet::toWallet);
                 return new ResponseEntity<>(userWallet.get(), "Usuário encontrado com sucesso! Carteira criada com sucesso!", 201);
             }
 

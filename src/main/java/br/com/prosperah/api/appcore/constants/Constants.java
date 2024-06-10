@@ -11,6 +11,8 @@ public class Constants {
     public static final String REQUISICAO_CAMPO_VAZIO = "Body de requisicao com campo [{}] vazio";
     public static final String USUARIO_NAO_ENCONTRADO = "Usuário [{}] não encontrado nas bases de dados";
 
+    public static final String CODIGO_OPERACAO_INVALIDO = "Código de operação [{}] inválido";
+
     // Outras constantes aqui...
 
     private Constants() {

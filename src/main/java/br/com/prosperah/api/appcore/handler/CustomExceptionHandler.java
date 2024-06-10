@@ -53,6 +53,11 @@ public class CustomExceptionHandler {
             log.info(CODIGO_AUTENTICACAO_INVALIDO, ex.getLocalizedMessage());
             return new ResponseEntity<>("Código de autenticação errado ou com formato inválido.", BAD_REQUEST.value());
         }
+
+        if (ex instanceof InvalidOperationException) {
+            log.info(CODIGO_OPERACAO_INVALIDO, ex.getLocalizedMessage());
+            return new ResponseEntity<>("Código de operação da movimentação financeira inválido.", BAD_REQUEST.value());
+        }
         return new ResponseEntity<>(BAD_REQUEST.getReasonPhrase(), BAD_REQUEST.value());
     }
 
